@@ -1,0 +1,25 @@
+{
+    "Matcha": {
+        "fromToken": {
+            "name": "USDC",
+            "amount": 100000.0
+        },
+        "toToken": {
+            "name": "WETH",
+            "amount": 55.575624
+        },
+        "rate": "1 WETH = 1799.3500171945889 USDC"
+    },
+    "1inch": {
+        "fromToken": {
+            "name": "WETH",
+            "amount": 55
+        },
+        "toToken": {
+            "name": "USDC",
+            "amount": 98879.081468
+        },
+        "rate": "1 USDC = 0.0005562349405298584 WETH",
+        "min_received": 98780.20238653201
+    }
+}

@@ -16,4 +16,4 @@ from .options import (
 chrome_driver = Chrome(service=Service(CHROME_LOCATION), options=options)
 
 # Quit chrome driver after whole script has finished execution
-#register(chrome_driver.quit)
+register(chrome_driver.quit)

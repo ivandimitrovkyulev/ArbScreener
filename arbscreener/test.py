@@ -1,41 +1,23 @@
-import selenium
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
-import time
+import requests
+from pprint import pprint
 
-driver = webdriver.Chrome(
-    executable_path="./chromedriver.exe"
-)
-# Designating which site to open to
-driver.get("https://matcha.xyz/markets/1/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48")
-# Pausing for a second
-time.sleep(1)
-# Typing into search and hitting enter
-driver.find_element_by_xpath(
-    "//input[@class='Input__StyledInput-jrcd0l-0 MarketPairEntrypoint__PrimaryInput-y3jjai-0 itcvxa oBMLO']"
-).send_keys(
-    "100000",
-    Keys.ENTER
-)
 
-time.sleep(5)
+coin1 = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+coin2 = "0xfe9A29aB92522D14Fc65880d817214261D8479AE"
+amount = 1000000000
+slippage = 0.1
 
-checkbox = driver.find_element_by_id(
-    "rfqm-switch"
-)
+inch_query = f"https://api.1inch.io/v4.0/1/quote?fromTokenAddress={coin1}&toTokenAddress={coin2}" \
+    f"&amount={amount}&slippage={slippage}"
 
-driver.execute_script("arguments[0].click();", checkbox)
+inch_data = requests.get(inch_query).json()
 
-for i in range(0,100):
-    x = driver.find_element_by_xpath("//*[@id='trading-page-container']/div[2]/div/div/aside/div[1]/div/div/div[6]/div[3]/div[2]/input").get_attribute("value")
-    print(x)
-    time.sleep(1)
+pprint(inch_data)
 
-# Pausing again
-time.sleep(10)
-# Closing the browser
-driver.quit()
+toToken_decimal = float(inch_data['toToken']['decimals'])
+toTokenAmount = float(inch_data['toTokenAmount'])
+amount_received = toTokenAmount / (10 ** toToken_decimal)
+
+amount_after_slippage = amount_received - (amount_received * slippage / 100)
+print(amount_received)
+print(amount_after_slippage)

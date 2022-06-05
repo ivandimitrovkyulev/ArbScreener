@@ -32,3 +32,4 @@ def logger_setup(
 
 # Configure logging settings
 log_error = logger_setup("error", "error.log")
+log_arbitrage = logger_setup("arbitrage", "arbitrage.log")

@@ -4,6 +4,8 @@ import json
 
 from time import sleep
 from atexit import register
+from datetime import datetime
+from pprint import pprint
 
 from selenium.webdriver import Chrome
 
@@ -13,12 +15,16 @@ from src.price_query import (
     swap_matcha_inch,
     swap_inch_matcha,
 )
-from src.variables import sleep_time
+from src.variables import (
+    sleep_time,
+    time_format,
+)
 
 
 # Send telegram debug message if program terminates
 program_name = os.path.abspath(os.path.basename(__file__))
 register(exit_handler_driver, chrome_driver, program_name)
+timestamp = datetime.now().astimezone().strftime(time_format)
 
 
 def scrape_prices(
@@ -59,6 +65,13 @@ input_dict = json.loads(sys.argv[-1])
 
 coin_1 = tuple(input_dict['coin1'].values())
 coin_2 = tuple(input_dict['coin2'].values())
+
+print(f"{timestamp}\n"
+      f"\tStarted arbitrage screening with the following settings:\n"
+      f"\t{coin_1[0]}/{coin_2[0]} and {coin_2[0]}/{coin_1[0]}\n"
+      f"\thttps://matcha.xyz --> https://app.1inch.io\n"
+      f"\thttps://app.1inch.io --> https://matcha.xyz\n")
+pprint(input_dict, indent=4)
 
 # Scrape prices for arbitrage opportunity and notify
 scrape_prices(driver=chrome_driver, coin1=coin_1, coin2=coin_2)

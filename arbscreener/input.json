@@ -4,7 +4,7 @@
         "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
         "decimals": 6,
         "swap_amount": 100000,
-        "min_difference": 249,
+        "min_difference": 100,
         "slippage_perc": 0.1
     },
     "coin2": {
@@ -12,7 +12,7 @@
         "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
         "decimals": 18,
         "swap_amount": 55,
-        "min_difference": 0.125,
+        "min_difference": 0.06,
         "slippage_perc": 0.1
     }
 }

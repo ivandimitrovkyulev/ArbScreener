@@ -21,16 +21,11 @@ from src.variables import (
 )
 
 
-# Send telegram debug message if program terminates
-program_name = os.path.abspath(os.path.basename(__file__))
-register(exit_handler_driver, chrome_driver, program_name)
-timestamp = datetime.now().astimezone().strftime(time_format)
-
-
 def scrape_prices(
         driver: Chrome,
         coin1: tuple,
         coin2: tuple,
+        debug: bool = False,
 ) -> None:
     """
     Continuously scrapes spot prices between 2 token/coins.
@@ -38,6 +33,7 @@ def scrape_prices(
     :param driver: Chrome webdriver instance
     :param coin1: A tuple of the coin to sell
     :param coin2: A tuple of the coin to buy
+    :param debug: If True will print all transactions in terminal
     :return: None
     """
     swap_amount_coin1 = coin1[3]
@@ -50,16 +46,21 @@ def scrape_prices(
     while True:
 
         # Check for Coin1 --> Coin2 arbitrage
-        swap_matcha_inch(driver, swap_amount_coin1, min_diff_coin1, coin1, coin2, slippage)
-        swap_inch_matcha(driver, swap_amount_coin1, min_diff_coin1, coin1, coin2, slippage)
+        swap_matcha_inch(driver, swap_amount_coin1, min_diff_coin1, coin1, coin2, slippage, debug=debug)
+        swap_inch_matcha(driver, swap_amount_coin1, min_diff_coin1, coin1, coin2, slippage, debug=debug)
 
         # Check for Coin2 --> Coin1 arbitrage
-        swap_matcha_inch(driver, swap_amount_coin2, min_diff_coin2, coin2, coin1, slippage)
-        swap_inch_matcha(driver, swap_amount_coin2, min_diff_coin2, coin2, coin1, slippage)
+        swap_matcha_inch(driver, swap_amount_coin2, min_diff_coin2, coin2, coin1, slippage, debug=debug)
+        swap_inch_matcha(driver, swap_amount_coin2, min_diff_coin2, coin2, coin1, slippage, debug=debug)
 
         # Sleep then query again
         sleep(sleep_time)
 
+
+# Send telegram debug message if program terminates
+program_name = os.path.abspath(os.path.basename(__file__))
+register(exit_handler_driver, chrome_driver, program_name)
+timestamp = datetime.now().astimezone().strftime(time_format)
 
 input_dict = json.loads(sys.argv[-1])
 

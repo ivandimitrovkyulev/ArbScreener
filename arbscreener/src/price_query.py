@@ -1,5 +1,9 @@
+import time
 import requests
+import functools
+
 from datetime import datetime
+from dataclasses import dataclass
 
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
@@ -16,6 +20,34 @@ from .variables import (
     request_wait_time,
     time_format,
 )
+
+
+@dataclass
+class AverageTime:
+    """Class for keeping track of average time execution."""
+    counter: int = 0
+    time_sum: float = 0
+
+
+def timer(func):
+    """Print the runtime of the decorated function"""
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+
+        start_time = time.perf_counter()
+        value = func(*args, **kwargs)
+        end_time = time.perf_counter()
+        run_time = end_time - start_time
+
+        AverageTime.counter += 1
+        AverageTime.time_sum += run_time
+
+        print(f"Finished {func.__name__!r} in {run_time:.6f} secs")
+
+        return value
+
+    return wrapper
 
 
 @driver_wait_exception_handler(wait_time=5)
@@ -147,6 +179,7 @@ def swap_matcha_inch(
         coin2: tuple = ('WETH', '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', 18),
         slippage: float = 0.1,
         rounding: int = 5,
+        debug: bool = False,
 ):
     """
     Continuously scrapes spot prices between 2 token/coins.
@@ -158,6 +191,7 @@ def swap_matcha_inch(
     :param coin2: A tuple of Name & Address of coin to buy
     :param slippage: Slippage tolerance in %
     :param rounding: Number of decimals to round to
+    :param debug: If True will print all transactions in terminal
     :return: None
     """
 
@@ -173,14 +207,17 @@ def swap_matcha_inch(
     # min_arb_opportunity = coin1_min_received - amount
 
     timestamp = datetime.now().astimezone().strftime(time_format)
+    message = f"{timestamp}\n" \
+              f"https://matcha.xyz --> https://app.1inch.io\n" \
+              f"\tSell {amount:,} {coin1[0]} for {coin2_received:,} {coin2[0]} on Matcha ->\n" \
+              f"\tSell {coin2_received:,} {coin2[0]} for {coin1_received:,} {coin1[0]} on 1inch\n" \
+              f"\tArbitrage: {arb_opportunity:,} {coin1[0]}"
 
+    # If debug True - only print to terminal
+    if debug:
+        print(message)
     # If arbitrage is at least the min required
-    if arb_opportunity >=min_difference:
-        message = f"{timestamp} - https://matcha.xyz --> https://app.1inch.io\n"\
-                  f"\tSell {amount:,} {coin1[0]} for {coin2_received:,} {coin2[0]} on Matcha ->\n"\
-                  f"\tSell {coin2_received:,} {coin2[0]} for {coin1_received:,} {coin1[0]} on 1inch\n"\
-                  f"\tArbitrage opportunity: {arb_opportunity:,} {coin1[0]}"
-
+    if arb_opportunity >= min_difference:
         # Log, send Telegram message and print to terminal
         log_arbitrage.info(message)
         telegram_send_message(message)
@@ -195,6 +232,7 @@ def swap_inch_matcha(
         coin2: tuple = ('WETH', '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', 18),
         slippage: float = 0.1,
         rounding: int = 5,
+        debug: bool = False,
 ):
     """
     Continuously scrapes spot prices between 2 token/coins.
@@ -206,6 +244,7 @@ def swap_inch_matcha(
     :param coin2: A tuple of Name & Address of coin to buy
     :param slippage: Slippage tolerance in %
     :param rounding: Number of decimals to round to
+    :param debug: If True will print all transactions in terminal
     :return: None
     """
 
@@ -221,14 +260,17 @@ def swap_inch_matcha(
     # min_arb_opportunity = coin1_min_received - amount
 
     timestamp = datetime.now().astimezone().strftime(time_format)
+    message = f"{timestamp}\n" \
+              f"https://app.1inch.io --> https://matcha.xyz\n" \
+              f"\tSell {amount:,} {coin1[0]} for {coin2_received:,} {coin2[0]} on 1inch ->\n" \
+              f"\tSell {coin2_received:,} {coin2[0]} for {coin1_received:,} {coin1[0]} on Matcha\n" \
+              f"\tArbitrage: {arb_opportunity:,} {coin1[0]}"
 
+    # If debug True - only print to terminal
+    if debug:
+        print(message)
     # If arbitrage is at least the min required
-    if arb_opportunity >=min_difference:
-        message = f"{timestamp} - https://app.1inch.io --> https://matcha.xyz\n"\
-                  f"\tSell {amount:,} {coin1[0]} for {coin2_received:,} {coin2[0]} on 1inch ->\n"\
-                  f"\tSell {coin2_received:,} {coin2[0]} for {coin1_received:,} {coin1[0]} on Matcha\n"\
-                  f"\tArbitrage opportunity: {arb_opportunity:,} {coin1[0]}"
-
+    elif arb_opportunity >= min_difference:
         # Log, send Telegram message and print to terminal
         telegram_send_message(message)
         log_arbitrage.info(message)

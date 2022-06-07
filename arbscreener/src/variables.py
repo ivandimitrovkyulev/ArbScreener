@@ -21,7 +21,7 @@ table_element_name = "History_tableLine__3dtlF"
 table_element_id = "History_table__9zhFG"
 
 # Amount of time to sleep after each scrape
-sleep_time = 5
+sleep_time = 0
 
 # Time to wait for page to respond
 request_wait_time = 20

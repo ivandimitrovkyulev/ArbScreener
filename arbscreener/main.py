@@ -11,7 +11,7 @@ from selenium.webdriver import Chrome
 
 from src.exceptions import exit_handler_driver
 from src.driver.driver import chrome_driver
-from src.price_query import (
+from src.swap import (
     swap_matcha_inch,
     swap_inch_matcha,
 )

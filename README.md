@@ -9,3 +9,18 @@ Screener that looks for arbitrage opportunities between 2 tokens and notifies ab
 
 This project uses **Python 3.9** and requires a
 [Chromium WebDriver](https://chromedriver.chromium.org/getting-started/) installed.
+
+<br> 
+
+## Run script
+
+To start screening for arbitrage:
+```
+var="$(cat input.json)"
+python3 main.py -s "$var"
+```
+To run in debug mode:
+```
+var="$(cat input.json)"
+python3 main.py -s "$var"
+```

@@ -1,8 +1,4 @@
-import time
 import requests
-import functools
-
-from dataclasses import dataclass
 
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
@@ -12,34 +8,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from .exceptions import driver_wait_exception_handler
 from .logger import log_error
 from .variables import request_wait_time
-
-
-@dataclass
-class AverageTime:
-    """Class for keeping track of average time execution."""
-    counter: int = 0
-    time_sum: float = 0
-
-
-def timer(func):
-    """Print the runtime of the decorated function"""
-
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-
-        start_time = time.perf_counter()
-        value = func(*args, **kwargs)
-        end_time = time.perf_counter()
-        run_time = end_time - start_time
-
-        AverageTime.counter += 1
-        AverageTime.time_sum += run_time
-
-        print(f"Finished {func.__name__!r} in {run_time:.6f} secs")
-
-        return value
-
-    return wrapper
 
 
 @driver_wait_exception_handler(wait_time=5)

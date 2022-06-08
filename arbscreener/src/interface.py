@@ -1,5 +1,5 @@
 from argparse import ArgumentParser
-from arbscreener import __version__
+from . import __version__
 
 
 # Create CLI interface
@@ -12,7 +12,13 @@ parser = ArgumentParser(
 )
 
 parser.add_argument(
-    "-d", "--debug", action="store", type=str, nargs=1, metavar="\b", dest="debug",
+    "-s", "--screen", action="store", type=str, nargs=1, metavar="\b", dest="screen",
+    help=f"Screens for arbitrage opportunities between 2 tokens and notifies about the spot price "
+         f"difference via a Telegram message.."
+)
+
+parser.add_argument(
+    "-d", "--debug", action="store", type=bool, nargs=1, metavar="\b", dest="debug",
     help=f"Runs the script in debug mode and prints all queries to terminal only."
 )
 

@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "ArbScreener"
 version = "0.1.0"
-description = ""
+description = "Arbitrage screener"
 authors = ["IK <ivandkyulev@gmail.com>"]
 
 [tool.poetry.dependencies]

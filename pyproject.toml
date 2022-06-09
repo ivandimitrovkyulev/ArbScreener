@@ -9,7 +9,6 @@ python = "^3.9"
 selenium = "^4.2.0"
 python-dotenv = "^0.20.0"
 requests = "^2.27.1"
-lxml = "^4.9.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

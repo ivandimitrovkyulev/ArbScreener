@@ -4,8 +4,8 @@
 Screener that looks for arbitrage opportunities between 2 tokens and notifies about the spot price difference via a Telegram message.
 
 <br> 
-
-## Installation
+<h2>Installation</h2>
+<br/>
 
 This project uses **Python 3.9** and requires a
 [Chromium WebDriver](https://chromedriver.chromium.org/getting-started/) installed.
@@ -24,8 +24,10 @@ curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poet
 
 To install project dependencies and activate a virtual env with poetry:
 ```
-poetry install
+# --no-root will not install the root package (the current project)
+poetry install --no-root
 
+# Activate virtual env
 poetry shell
 ```
 
@@ -40,24 +42,25 @@ CHAT_ID_ALERTS=<id-of-telegram-chat-for-alerts>
 CHAT_ID_DEBUG=<id-of-telegram-chat-for-debugging>
 
 ```
+<br> 
+<h2>Run script</h2>
 <br/>
-
-## Run script
 
 To start screening for arbitrage:
 ```
 var="$(cat docs/input.json)"
+
 python3 main.py -s "$var"
 ```
 To run in debug mode:
 ```
 var="$(cat docs/input.json)"
+
 python3 main.py -s "$var"
 ```
 
-<br/>
-
-## Docker deployment
+<br> 
+<h2>Docker deployment</h2>
 <br/>
 
 Build a docker image named **arbscreener**:

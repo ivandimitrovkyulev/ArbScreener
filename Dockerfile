@@ -21,7 +21,7 @@ RUN poetry config virtualenvs.create false \
     && poetry install --no-root --no-interaction --no-ansi
 
 # Copy all project files
-COPY arbscreener ./arbscreener
+COPY src ./src
 COPY main.py .
 COPY .env .
 

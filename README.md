@@ -16,11 +16,11 @@ This project uses **Python 3.9** and requires a
 
 To start screening for arbitrage:
 ```
-var="$(cat input.json)"
+var="$(cat docs/input.json)"
 python3 main.py -s "$var"
 ```
 To run in debug mode:
 ```
-var="$(cat input.json)"
+var="$(cat docs/input.json)"
 python3 main.py -s "$var"
 ```

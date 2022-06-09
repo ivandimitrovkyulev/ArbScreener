@@ -6,7 +6,7 @@ from atexit import register
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.service import Service
 
-from .options import (
+from arbscreener.src.driver.options import (
     CHROME_LOCATION,
     options,
 )

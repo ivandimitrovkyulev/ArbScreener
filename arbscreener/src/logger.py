@@ -1,6 +1,6 @@
 import logging
 
-from .variables import log_format
+from arbscreener.src.variables import log_format
 
 
 def logger_setup(

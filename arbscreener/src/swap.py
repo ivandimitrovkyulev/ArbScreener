@@ -1,14 +1,18 @@
+from time import sleep
 from datetime import datetime
 
 from selenium.webdriver import Chrome
 
-from .message import telegram_send_message
-from .logger import log_arbitrage
-from .price_query import (
+from arbscreener.src.message import telegram_send_message
+from arbscreener.src.logger import log_arbitrage
+from arbscreener.src.price_query import (
     query_matcha,
     query_inch,
 )
-from .variables import time_format
+from arbscreener.src.variables import (
+    time_format,
+    sleep_time,
+)
 
 
 def swap_matcha_inch(
@@ -133,3 +137,48 @@ def swap_inch_matcha(
         telegram_send_message(message)
         log_arbitrage.info(message)
         print(message)
+
+
+def scrape_prices(
+        driver: Chrome,
+        coin1: tuple,
+        coin2: tuple,
+        slippage: float = 0.1,
+        debug: bool = False,
+) -> None:
+    """
+    Continuously scrapes spot prices between 2 token/coins.
+
+    :param driver: Chrome webdriver instance
+    :param coin1: A tuple of the coin to sell
+    :param coin2: A tuple of the coin to buy
+    :param slippage: Allowed slippage for transaction
+    :param debug: If True will print all transactions in terminal
+    :return: None
+    """
+    swap_amount_coin1 = coin1[4]
+    min_diff_coin1 = coin1[5]
+
+    swap_amount_coin2 = coin2[4]
+    min_diff_coin2 = coin2[5]
+
+    while True:
+
+        if debug:
+            time1 = datetime.now().astimezone()
+            print(f"----------------------LOOP----------------------")
+
+        # Check for Coin1 --> Coin2 arbitrage
+        swap_matcha_inch(driver, swap_amount_coin1, min_diff_coin1, coin1, coin2, slippage, debug)
+        swap_inch_matcha(driver, swap_amount_coin1, min_diff_coin1, coin1, coin2, slippage, debug)
+
+        # Check for Coin2 --> Coin1 arbitrage
+        swap_matcha_inch(driver, swap_amount_coin2, min_diff_coin2, coin2, coin1, slippage, debug)
+        swap_inch_matcha(driver, swap_amount_coin2, min_diff_coin2, coin2, coin1, slippage, debug)
+
+        if debug:
+            time2 = datetime.now().astimezone()
+            print(f"-->Loop executed in {time2 - time1} secs.\n")
+
+        # Sleep then query again
+        sleep(sleep_time)

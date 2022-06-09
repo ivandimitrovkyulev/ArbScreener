@@ -12,8 +12,8 @@ from selenium.common.exceptions import (
     TimeoutException,
 )
 
-from .message import telegram_send_message
-from .variables import time_format
+from arbscreener.src.message import telegram_send_message
+from arbscreener.src.variables import time_format
 
 
 # Define a Function type
@@ -73,7 +73,7 @@ def exit_handler_driver(
 
     timestamp = datetime.now().astimezone().strftime(time_format)
 
-    message = f"--------------------WARNING--------------------\n" \
+    message = f"* WARNING *\n" \
               f"{timestamp}: {program_name} has stopped.\n" \
               f"Please contact your administrator.\n" \
               f"{info}"

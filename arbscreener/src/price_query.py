@@ -5,9 +5,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 
-from .exceptions import driver_wait_exception_handler
-from .logger import log_error
-from .variables import request_wait_time
+from arbscreener.src.exceptions import driver_wait_exception_handler
+from arbscreener.src.logger import log_error
+from arbscreener.src.variables import request_wait_time
 
 
 @driver_wait_exception_handler(wait_time=5)

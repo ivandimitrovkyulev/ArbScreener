@@ -6,8 +6,8 @@ from requests import (
     post,
     Response,
 )
-from .logger import log_error
-from .variables import (
+from arbscreener.src.logger import log_error
+from arbscreener.src.variables import (
     TOKEN,
     CHAT_ID_ALERTS,
     CHAT_ID_DEBUG,

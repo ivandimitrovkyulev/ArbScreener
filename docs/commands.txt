@@ -1,3 +1,2 @@
-var="$(cat input.json)"
+var="$(cat docs/input.json)"
 docker run --shm-size="2g" -it <image-id> python3 main.py -s "$var"
-docker kill $(docker ps -q)

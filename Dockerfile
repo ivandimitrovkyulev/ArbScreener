@@ -13,13 +13,17 @@ ENV PYTHONFAULTHANDLER=1 \
 RUN pip install "poetry==$POETRY_VERSION"
 
 # Copy only requirements to cache them in docker layer
-WORKDIR ./arbscreener
+WORKDIR ./ArbScreener
 COPY poetry.lock pyproject.toml .
 
 # Project init
 RUN poetry config virtualenvs.create false \
     && poetry install --no-root --no-interaction --no-ansi
 
+# Copy all project files
+COPY arbscreener ./arbscreener
+COPY main.py .
+COPY .env .
 
 # Install Chrome WebDriver
 RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` && \
@@ -36,11 +40,5 @@ RUN curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-ke
     apt-get -yqq update && \
     apt-get -yqq install google-chrome-stable && \
     rm -rf /var/lib/apt/lists/*
-
-
-# Copy all project files
-COPY ./arbscreener .
-COPY ./README.md .
-
 
 CMD ["pwd"]

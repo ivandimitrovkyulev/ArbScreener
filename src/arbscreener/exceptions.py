@@ -12,8 +12,8 @@ from selenium.common.exceptions import (
     TimeoutException,
 )
 
-from arbscreener.src.message import telegram_send_message
-from arbscreener.src.variables import time_format
+from src.arbscreener.message import telegram_send_message
+from src.arbscreener.variables import time_format
 
 
 # Define a Function type

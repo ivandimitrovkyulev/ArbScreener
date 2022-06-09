@@ -3,13 +3,13 @@ from datetime import datetime
 
 from selenium.webdriver import Chrome
 
-from arbscreener.src.message import telegram_send_message
-from arbscreener.src.logger import log_arbitrage
-from arbscreener.src.price_query import (
+from src.arbscreener.message import telegram_send_message
+from src.arbscreener.logger import log_arbitrage
+from src.arbscreener.price_query import (
     query_matcha,
     query_inch,
 )
-from arbscreener.src.variables import (
+from src.arbscreener.variables import (
     time_format,
     sleep_time,
 )

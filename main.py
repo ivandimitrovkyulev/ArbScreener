@@ -6,7 +6,7 @@ from atexit import register
 from datetime import datetime
 from pprint import pprint
 
-from arbscreener import (
+from src.arbscreener import (
     exit_handler_driver,
     chrome_driver,
     scrape_prices,

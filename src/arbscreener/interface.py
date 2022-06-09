@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 
-from arbscreener import __version__
+from src.arbscreener import __version__
 
 
 # Create CLI interface

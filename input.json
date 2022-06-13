@@ -1,0 +1,22 @@
+{
+    "coin1": {
+        "name": "stETH",
+        "address": "0xae7ab96520de3a18e5e111b5eaab095312d7fe84",
+        "decimals": 18,
+        "rounding": 5,
+        "swap_amount": 55,
+        "min_difference": 0.06
+    },
+    "coin2": {
+        "name": "WETH",
+        "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "decimals": 18,
+        "rounding": 5,
+        "swap_amount": 55,
+        "min_difference": 0.06
+    },
+    "settings": { 
+        "slippage_perc": 0.1,
+        "agreement": true
+    }
+}
